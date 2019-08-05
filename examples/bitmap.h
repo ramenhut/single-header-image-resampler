@@ -32,6 +32,7 @@
 #ifndef __BITMAP_H__
 #define __BITMAP_H__
 
+#include <cstdint>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -41,41 +42,40 @@ using ::std::ofstream;
 using ::std::string;
 using ::std::vector;
 
-namespace base {
+#ifndef __BASE_TYPES_H__
+#define __BASE_TYPES_H__
 
-#ifndef __BASE_TYPES__H_
-#define __BASE_TYPES__H_
 #if defined(WIN32) || defined(_WIN64)
+#define BASE_PLATFORM_WINDOWS
 #include "windows.h"
-typedef INT64 int64;
-typedef INT32 int32;
-typedef INT16 int16;
-typedef INT8 int8;
-typedef UINT64 uint64;
-typedef UINT32 uint32;
-typedef UINT16 uint16;
-typedef UINT8 uint8;
 #elif defined(__APPLE__)
+#define BASE_PLATFORM_MACOS
 #include "TargetConditionals.h"
 #include "ctype.h"
 #include "sys/types.h"
 #include "unistd.h"
-typedef int64_t int64;
-typedef int32_t int32;
-typedef int16_t int16;
-typedef int8_t int8;
-typedef u_int64_t uint64;
-typedef u_int32_t uint32;
-typedef u_int16_t uint16;
-typedef u_int8_t uint8;
 #else
 #error "Unsupported target platform detected."
 #endif
 
+namespace base {
+
+typedef int64_t int64;
+typedef int32_t int32;
+typedef int16_t int16;
+typedef int8_t int8;
+typedef int64_t uint64;
+typedef uint32_t uint32;
+typedef uint16_t uint16;
+typedef uint8_t uint8;
 typedef float float32;
 typedef double float64;
 
-#endif  // __BASE_TYPES__H_
+}  // namespace base
+
+#endif  // __BASE_TYPES_H__
+
+namespace base {
 
 #ifndef BI_RGB
 #define BI_RGB (0)
