@@ -4,7 +4,7 @@ Single header C++ code that resamples and resizes your pretty pictures. There's 
 This is actually a simplified and minified version of the image resampling logic in the [Imagine Framework](http://bertolami.com/index.php?engine=portfolio&content=computer-graphics&detail=imagine-framework). It could use some sprucing up, but it gets the job done.
 
 ### Supported image data formats:
-This resampler supports the most common raw image format around: **three channel with 8 bits per channel color** (e.g. RGB24). If you need support for other formats you could check out [imagine](http://bertolami.com/index.php?engine=portfolio&content=computer-graphics&detail=imagine-framework) which supports a broad variety of configurable formats, or you could modify this header to suit your needs. 
+This resampler supports the most common raw image format around: **three channel with 8 bits per channel color** (e.g. RGB24 aka RGB8). If you need support for other formats you could check out [Imagine](http://bertolami.com/index.php?engine=portfolio&content=computer-graphics&detail=imagine-framework) which supports a broad variety of configurable formats, or you could modify this header to suit your needs. 
 
 ### Supported resampling methods:
 Choose from any of the following sampling methods. For more information about how each of these works, check out [this blog post](http://bertolami.com/index.php?engine=blog&content=posts&detail=inside-imagine-kernels).
