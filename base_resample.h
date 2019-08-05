@@ -32,44 +32,44 @@
 #ifndef __BASE_RESAMPLE_H__
 #define __BASE_RESAMPLE_H__
 
+#include <cstdint>
 #include <memory>
 #include <string>
 
-namespace base {
+#ifndef __BASE_TYPES_H__
+#define __BASE_TYPES_H__
 
-#ifndef __BASE_TYPES__H_
-#define __BASE_TYPES__H_
 #if defined(WIN32) || defined(_WIN64)
+#define BASE_PLATFORM_WINDOWS
 #include "windows.h"
-typedef INT64 int64;
-typedef INT32 int32;
-typedef INT16 int16;
-typedef INT8 int8;
-typedef UINT64 uint64;
-typedef UINT32 uint32;
-typedef UINT16 uint16;
-typedef UINT8 uint8;
 #elif defined(__APPLE__)
+#define BASE_PLATFORM_MACOS
 #include "TargetConditionals.h"
 #include "ctype.h"
 #include "sys/types.h"
 #include "unistd.h"
-typedef int64_t int64;
-typedef int32_t int32;
-typedef int16_t int16;
-typedef int8_t int8;
-typedef u_int64_t uint64;
-typedef u_int32_t uint32;
-typedef u_int16_t uint16;
-typedef u_int8_t uint8;
 #else
 #error "Unsupported target platform detected."
 #endif
 
+namespace base {
+
+typedef int64_t int64;
+typedef int32_t int32;
+typedef int16_t int16;
+typedef int8_t int8;
+typedef int64_t uint64;
+typedef uint32_t uint32;
+typedef uint16_t uint16;
+typedef uint8_t uint8;
 typedef float float32;
 typedef double float64;
 
-#endif  // __BASE_TYPES__H_
+}  // namespace base
+
+#endif  // __BASE_TYPES_H__
+
+namespace base {
 
 enum KernelType : uint8 {
   KernelTypeUnknown,
@@ -281,9 +281,9 @@ bool SampleKernelBicubicH(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
@@ -323,9 +323,9 @@ bool SampleKernelBicubicV(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
@@ -382,9 +382,9 @@ bool SampleKernelLanczosH(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
@@ -426,9 +426,9 @@ bool SampleKernelLanczosV(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
@@ -502,9 +502,9 @@ bool SampleKernelAverageH(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
@@ -563,9 +563,9 @@ bool SampleKernelAverageV(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
@@ -608,9 +608,9 @@ bool SampleKernelGaussianH(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
@@ -653,9 +653,9 @@ bool SampleKernelGaussianV(uint8* src, uint32 src_width, uint32 src_height,
 
   /* Normalize our bicubic sum back to the valid pixel range. */
   float32 scale_factor = 1.0f / sample_count;
-  output[0] = scale_factor * total_samples[0];
-  output[1] = scale_factor * total_samples[1];
-  output[2] = scale_factor * total_samples[2];
+  output[0] = clip_range(scale_factor * total_samples[0], 0, 255);
+  output[1] = clip_range(scale_factor * total_samples[1], 0, 255);
+  output[2] = clip_range(scale_factor * total_samples[2], 0, 255);
 
   return true;
 }
