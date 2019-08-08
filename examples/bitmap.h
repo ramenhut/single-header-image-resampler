@@ -250,16 +250,12 @@ bool SaveBitmapImage(const string &filename, vector<uint8> *input, uint32 width,
 
   uint32 image_row_pitch = bih.width * 3;
   uint32 image_size = image_row_pitch * bih.height;
+  uint32 row_stride = bih.width * 3;
 
   /* The BMP format requires each scanline to be 32 bit aligned, so we insert
      padding if necessary. */
   uint32 scanline_padding =
       greater_multiple(bih.width * 3, 4) - (bih.width * 3);
-
-  ::std::vector<uint8> one_texel_row;
-  one_texel_row.resize(image_row_pitch);
-  uint8 *row_ptr = &one_texel_row.at(0);
-  uint32 row_stride = bih.width * 3;
 
   for (uint32 i = 0; i < bih.height; i++) {
     uint32 y_offset = i * row_stride;
